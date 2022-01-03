@@ -1,11 +1,7 @@
 <template>
   <li>
     <template v-if="menu.submenus">
-      <BaseMenuItem
-        :menu="menu"
-        :depth="depth + 1"
-        :is-parent-open="isParentOpen"
-      />
+      <BaseMenuItem :menu="menu" :depth="depth + 1" />
     </template>
     <nuxt-link
       :id="menu.title.toLowerCase().replace(' ', '-')"
@@ -27,10 +23,6 @@ export default {
     depth: {
       type: Number,
       required: true,
-    },
-    isParentOpen: {
-      type: Boolean,
-      default: false,
     },
   },
 };

@@ -2,6 +2,7 @@
   <div class="site-wrapper">
     <SiteHeader :inert="pageHasModalOpen" />
     <main :inert="pageHasModalOpen">
+      <SidebarNav />
       <nuxt />
     </main>
     <SiteFooter :inert="pageHasModalOpen" />

@@ -2,26 +2,21 @@
   <div>
     <button
       @click.prevent="toggleMenu(menu)"
-      :id="menu.title.toLowerCase().replace(' ', '-')"
+      :id="menuId"
       aria-haspopup="true"
       ref="menuButtonRef"
       :aria-expanded="isOpen.toString()"
-      :aria-controls="`${menu.title.toLowerCase().replace(' ', '-')}-submenu`"
+      :aria-controls="submenuId"
     >
       {{ menu.title }}
     </button>
 
-    <ul
-      v-show="isOpen"
-      @keydown.esc.stop="closeMenu"
-      :id="`${menu.title.toLowerCase().replace(' ', '-')}-submenu`"
-    >
+    <ul v-show="isOpen" @keydown.esc.stop="closeMenu" :id="submenuId">
       <BaseMenu
         v-for="(menu, index) in menu.submenus"
         :key="index"
         :menu="menu"
         :depth="depth + 1"
-        :is-parent-open="isOpen"
       />
     </ul>
   </div>
@@ -43,44 +38,30 @@ export default {
       type: Object,
       required: true,
     },
-    isParentOpen: {
-      type: Boolean,
-      default: false,
-    },
   },
-  watch: {
-    isParentOpen: function () {
-      if (!this.isParentOpen) {
-        this.isOpen = false;
-      }
+  computed: {
+    menuId() {
+      return this.menu.title.toLowerCase().replace(" ", "-");
+    },
+    submenuId() {
+      return `${this.menu.title.toLowerCase().replace(" ", "-")}-submenu`;
     },
   },
   methods: {
-    toggleMenu(menu) {
-      // format menu name to match ID
-      const activeMenu = `${menu.title}-submenu`
-        .toLowerCase()
-        .replace(" ", "-");
-
+    toggleMenu() {
       this.isOpen = !this.isOpen;
 
       if (this.isOpen) {
-        // $nextTick here to wait for the DOM to render the previously hidden UL before we can grab it and focus the first element
         this.$nextTick(() => {
-          this.$nextTick(() => {
-            const subMenu = document.getElementById(activeMenu);
-            const firstItem = subMenu.querySelector("a, button");
-            firstItem?.focus();
-          });
+          const submenu = document.getElementById(this.submenuId);
+          const firstItem = submenu.querySelector("a, button");
+          firstItem?.focus();
         });
       }
 
-      // Focus the initial menu trigger if closing a menu
       if (!this.isOpen) {
         this.$nextTick(() => {
-          this.$nextTick(() => {
-            this.$refs.menuButtonRef?.focus();
-          });
+          this.$refs.menuButtonRef?.focus();
         });
       }
     },

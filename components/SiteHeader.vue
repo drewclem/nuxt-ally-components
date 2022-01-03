@@ -1,5 +1,5 @@
 <template>
   <header>
-    <SiteNav />
+    <nuxt-link to="/">Header link</nuxt-link>
   </header>
 </template>

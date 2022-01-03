@@ -1,5 +1,5 @@
 <template>
-  <nav id="Main Navigation" @keydown="handleKeyPress">
+  <nav id="Sidebar Navigation" @keydown="handleKeyPress">
     <ul>
       <BaseMenu
         v-for="(menu, index) in navigation"
@@ -52,7 +52,7 @@ export default {
   methods: {
     handleKeyPress(e) {
       // Query to get focusable elements within the sidebar nav
-      const navEl = document.getElementById("Main Navigation");
+      const navEl = document.getElementById("Sidebar Navigation");
       const focusableElements = navEl.querySelectorAll(["a", "button"]);
       // Convert nodelist of elements into an array
       const focusableElementsArr = Array.from(focusableElements);
